@@ -160,8 +160,12 @@ function parseNumberFromString(value) {
  *   3,3,3   => 5.196152422706632
  *   1,2,3   => 3.741657386773941
  */
-function getParallelepipedDiagonal(/* a, b, c */) {
-  throw new Error('Not implemented');
+function getParallelepipedDiagonal(a, b, c) {
+  const aSquare = a * a;
+  const bSquare = b * b;
+  const cSquare = c * c;
+  const sumOfSquares = aSquare + bSquare + cSquare;
+  return Math.sqrt(sumOfSquares);
 }
 
 
