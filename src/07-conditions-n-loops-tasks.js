@@ -415,8 +415,27 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  if (pathes.length === 0) {
+    return '';
+  }
+
+  const parts = pathes[0].split('/');
+  let commonPath = '';
+
+  for (let i = 0; i < parts.length; i += 1) {
+    const currentPart = parts[i];
+    for (let j = 1; j < pathes.length; j += 1) {
+      const path = pathes[j];
+      const pathParts = path.split('/');
+      if (i >= pathParts.length || pathParts[i] !== currentPart) {
+        return commonPath;
+      }
+    }
+    commonPath += `${currentPart}/`;
+  }
+
+  return commonPath;
 }
 
 
@@ -438,8 +457,24 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const m1Rows = m1.length;
+  const m1Cols = m1[0].length;
+  const m2Cols = m2[0].length;
+
+  const result = [];
+
+  for (let i = 0; i < m1Rows; i += 1) {
+    result[i] = [];
+    for (let j = 0; j < m2Cols; j += 1) {
+      result[i][j] = 0;
+      for (let k = 0; k < m1Cols; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
 }
 
 
@@ -473,8 +508,41 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const winningCombinations = [
+    // Rows
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+    // Columns
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+    // Diagonals
+    [[0, 0], [1, 1], [2, 2]],
+    [[0, 2], [1, 1], [2, 0]],
+  ];
+
+  const isWinner = (combination) => {
+    const [a, b, c] = combination;
+    const [rowA, colA] = a;
+    const [rowB, colB] = b;
+    const [rowC, colC] = c;
+    return (
+      position[rowA][colA]
+      && position[rowA][colA] === position[rowB][colB]
+      && position[rowA][colA] === position[rowC][colC]
+    );
+  };
+
+  const winnerCombination = winningCombinations.find(isWinner);
+  if (winnerCombination) {
+    const [a] = winnerCombination;
+    const [row, col] = a;
+    return position[row][col];
+  }
+
+  return undefined;
 }
 
 
